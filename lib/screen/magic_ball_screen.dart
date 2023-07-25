@@ -3,12 +3,37 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:surf_practice_magic_ball/models/data_notifier.dart';
+import 'package:shake/shake.dart';
 
-class MagicBallScreen extends StatelessWidget {
+class MagicBallScreen extends StatefulWidget {
+  MagicBallScreen({super.key});
+
+  @override
+  State<MagicBallScreen> createState() => _MagicBallScreenState();
+}
+
+class _MagicBallScreenState extends State<MagicBallScreen> {
   // const MagicBallScreen({Key? key}) : super(key: key);
-
   final int numberOfStars = 400;
+
   final Random random = Random();
+  void initState() {
+    super.initState();
+    ShakeDetector detector = ShakeDetector.autoStart(
+      onPhoneShake: () {
+        print("aaaa");
+        // Do stuff on phone shake
+      },
+      minimumShakeCount: 1,
+      shakeSlopTimeMS: 500,
+      shakeCountResetTime: 3000,
+      shakeThresholdGravity: 2.7,
+    );
+
+    // To close: detector.stopListening();
+    // ShakeDetector.waitForStart() waits for user to call detector.startListening();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,44 +53,79 @@ class MagicBallScreen extends StatelessWidget {
                 onTap: () {
                   context.read<DataNotifier>().getBallResponse();
                 },
-                child: Stack(children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      'assets/ball.png',
-                    ),
-                  ),
-                  context.watch<DataNotifier>().getResponse == ''
-                      ? Stack(children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: Image.asset(
-                              'assets/small_star.png',
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Image.asset(
-                              'assets/star.png',
-                            ),
-                          )
-                        ])
-                      : Align(
-                          alignment: Alignment.center,
-                          child: Text(context.watch<DataNotifier>().getResponse,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20)),
-                        )
-                ])),
-            Center(
-              child: Text(
-                'tap to ball',
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                child: context.watch<DataNotifier>().getResponse == ''
+                    ? bollFirstFrame()
+                    : bollTextFrame()),
+            SizedBox(
+              width: 300,
+              child: Center(
+                child: Text(
+                  'Нажимте на шар или потрясите телефон',
+                  style: TextStyle(color: Colors.grey, fontSize: 20),
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget bollFirstFrame() {
+    return CircleAvatar(
+      maxRadius: MediaQuery.of(context).size.width * 0.6,
+      minRadius: 1,
+      backgroundColor: Colors.transparent,
+      backgroundImage: AssetImage('assets/ball.png'),
+      child: Stack(children: [
+        Align(
+          alignment: Alignment.center,
+          child: CircleAvatar(
+              maxRadius: MediaQuery.of(context).size.width * 0.45,
+              minRadius: 1,
+              backgroundColor: Colors.transparent,
+              backgroundImage: AssetImage('assets/small_star.png')),
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: CircleAvatar(
+              maxRadius: MediaQuery.of(context).size.width * 0.4,
+              minRadius: 1,
+              backgroundColor: Colors.transparent,
+              backgroundImage: AssetImage('assets/star.png')),
+        ),
+      ]),
+    );
+  }
+
+  Widget bollTextFrame() {
+    return CircleAvatar(
+        maxRadius: MediaQuery.of(context).size.width * 0.6,
+        minRadius: 1,
+        backgroundColor: Colors.transparent,
+        backgroundImage: AssetImage('assets/ball.png'),
+        child: Stack(children: [
+          Text(
+            context.watch<DataNotifier>().getResponse,
+            style: TextStyle(color: Colors.white),
+          )
+        ]));
+  }
+
+  Widget bollErrorFrame() {
+    return CircleAvatar(
+      maxRadius: MediaQuery.of(context).size.width,
+      minRadius: 1,
+      backgroundColor: Colors.transparent,
+      child: Stack(children: [
+        Image.asset('assets/ball.png'),
+        Image.asset('assets/small_star.png'),
+        Image.asset(
+          'assets/star.png',
+        ),
+      ]),
     );
   }
 }
