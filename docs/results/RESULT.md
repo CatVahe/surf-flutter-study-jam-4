@@ -10,8 +10,8 @@
 # Ссылки на демонстрацию работы/скриншоты
 
 [здесь оставьте ссылки на скринкаст/скриншоты, можно в Github-репозитории или в отдельном обалке]
-<p align="center"><img src="docs/results/3.jpg" width="250"></p>
- <p align="center"><img src="docs/resluts/2.jpg" width="250"></p>
- <p align="center"><img src="docs/results/1.jpg" width="250"></p>
+<p align="center"><img src="3.jpg" width="250"></p>
+ <p align="center"><img src="2.jpg" width="250"></p>
+ <p align="center"><img src="1.jpg" width="250"></p>
  
    
