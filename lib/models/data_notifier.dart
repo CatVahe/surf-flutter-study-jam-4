@@ -5,12 +5,13 @@ import 'package:http/http.dart' as http;
 
 class DataNotifier extends ChangeNotifier {
   String _response = '';
+  String _orientation = 'LANDSCAPE';
 
   String get getResponse => _response;
 
   Future<void> getBallResponse() async {
     try {
-      var response = await http.get(Uri.parse("https://eightballapi.com/apis"));
+      var response = await http.get(Uri.parse("https://eightballapi.com/api"));
       if (response.statusCode == 200) {
         Map<String, dynamic> result = jsonDecode(response.body);
         _response = result['reading'];
@@ -23,6 +24,14 @@ class DataNotifier extends ChangeNotifier {
       _response = 'error';
       print(_response);
       notifyListeners();
+    }
+  }
+
+  String getOrientation({required double width, required double height}) {
+    if (width >= height) {
+      return 'LANDSCAPE';
+    } else {
+      return 'PORTRAIT';
     }
   }
 }

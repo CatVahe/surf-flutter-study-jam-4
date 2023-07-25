@@ -19,7 +19,7 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
   final Random random = Random();
   void initState() {
     super.initState();
-    ShakeDetector detector = ShakeDetector.autoStart(
+    ShakeDetector.autoStart(
       onPhoneShake: () {
         context.read<DataNotifier>().getBallResponse();
         // Do stuff on phone shake
@@ -58,7 +58,7 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
                     : context.watch<DataNotifier>().getResponse == 'error'
                         ? bollErrorFrame()
                         : bollTextFrame()),
-            SizedBox(
+            const SizedBox(
               width: 300,
               child: Center(
                 child: Text(
@@ -77,7 +77,12 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
 
   Widget bollFirstFrame() {
     return CircleAvatar(
-      maxRadius: MediaQuery.of(context).size.width * 0.6,
+      maxRadius: context.watch<DataNotifier>().getOrientation(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height) ==
+              'LANDSCAPE'
+          ? MediaQuery.of(context).size.height * 0.4
+          : MediaQuery.of(context).size.width * 0.6,
       minRadius: 1,
       backgroundColor: Colors.transparent,
       backgroundImage: AssetImage('assets/ball.png'),
@@ -85,7 +90,12 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
         Align(
           alignment: Alignment.center,
           child: CircleAvatar(
-              maxRadius: MediaQuery.of(context).size.width * 0.45,
+              maxRadius: context.watch<DataNotifier>().getOrientation(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height) ==
+                      'LANDSCAPE'
+                  ? MediaQuery.of(context).size.height * 0.45
+                  : MediaQuery.of(context).size.width * 0.45,
               minRadius: 1,
               backgroundColor: Colors.transparent,
               backgroundImage: AssetImage('assets/small_star.png')),
@@ -93,7 +103,12 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
         Align(
           alignment: Alignment.center,
           child: CircleAvatar(
-              maxRadius: MediaQuery.of(context).size.width * 0.4,
+              maxRadius: context.watch<DataNotifier>().getOrientation(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height) ==
+                      'LANDSCAPE'
+                  ? MediaQuery.of(context).size.height * 0.4
+                  : MediaQuery.of(context).size.width * 0.4,
               minRadius: 1,
               backgroundColor: Colors.transparent,
               backgroundImage: AssetImage('assets/star.png')),
@@ -104,7 +119,12 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
 
   Widget bollTextFrame() {
     return CircleAvatar(
-        maxRadius: MediaQuery.of(context).size.width * 0.6,
+        maxRadius: context.watch<DataNotifier>().getOrientation(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height) ==
+                'LANDSCAPE'
+            ? MediaQuery.of(context).size.height * 0.4
+            : MediaQuery.of(context).size.width * 0.4,
         minRadius: 1,
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage('assets/ball.png'),
@@ -118,22 +138,25 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
 
   Widget bollErrorFrame() {
     return CircleAvatar(
-      maxRadius: MediaQuery.of(context).size.width * 0.6,
+      maxRadius: context.watch<DataNotifier>().getOrientation(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height) ==
+              'LANDSCAPE'
+          ? MediaQuery.of(context).size.height * 0.6
+          : MediaQuery.of(context).size.width * 0.6,
       minRadius: 1,
       backgroundColor: Colors.transparent,
-      backgroundImage: AssetImage('assets/ball.png'),
+      backgroundImage: AssetImage('assets/ball_red.png'),
       child: Stack(children: [
-        Text(
-          context.watch<DataNotifier>().getResponse,
-          style: TextStyle(color: Colors.red),
-        )
-        /*
-        
-        
         Align(
           alignment: Alignment.center,
           child: CircleAvatar(
-              maxRadius: MediaQuery.of(context).size.width * 0.45,
+              maxRadius: context.watch<DataNotifier>().getOrientation(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height) ==
+                      'LANDSCAPE'
+                  ? MediaQuery.of(context).size.height * 0.45
+                  : MediaQuery.of(context).size.width * 0.45,
               minRadius: 1,
               backgroundColor: Colors.transparent,
               backgroundImage: AssetImage('assets/small_star.png')),
@@ -141,12 +164,16 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
         Align(
           alignment: Alignment.center,
           child: CircleAvatar(
-              maxRadius: MediaQuery.of(context).size.width * 0.4,
+              maxRadius: context.watch<DataNotifier>().getOrientation(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height) ==
+                      'LANDSCAPE'
+                  ? MediaQuery.of(context).size.height * 0.4
+                  : MediaQuery.of(context).size.width * 0.4,
               minRadius: 1,
               backgroundColor: Colors.transparent,
               backgroundImage: AssetImage('assets/star.png')),
         ),
-        */
       ]),
     );
   }

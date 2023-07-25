@@ -25,6 +25,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/ball.png
+    - assets/ball_red.png
     - assets/small_star.png
     - assets/star.png
 
