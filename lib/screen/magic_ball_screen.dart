@@ -124,7 +124,7 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
                     height: MediaQuery.of(context).size.height) ==
                 'LANDSCAPE'
             ? MediaQuery.of(context).size.height * 0.4
-            : MediaQuery.of(context).size.width * 0.4,
+            : MediaQuery.of(context).size.width * 0.6,
         minRadius: 1,
         backgroundColor: Colors.transparent,
         backgroundImage: AssetImage('assets/ball.png'),
