@@ -21,7 +21,7 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
     super.initState();
     ShakeDetector detector = ShakeDetector.autoStart(
       onPhoneShake: () {
-        print("aaaa");
+        context.read<DataNotifier>().getBallResponse();
         // Do stuff on phone shake
       },
       minimumShakeCount: 1,
@@ -55,7 +55,9 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
                 },
                 child: context.watch<DataNotifier>().getResponse == ''
                     ? bollFirstFrame()
-                    : bollTextFrame()),
+                    : context.watch<DataNotifier>().getResponse == 'error'
+                        ? bollErrorFrame()
+                        : bollTextFrame()),
             SizedBox(
               width: 300,
               child: Center(
@@ -116,15 +118,35 @@ class _MagicBallScreenState extends State<MagicBallScreen> {
 
   Widget bollErrorFrame() {
     return CircleAvatar(
-      maxRadius: MediaQuery.of(context).size.width,
+      maxRadius: MediaQuery.of(context).size.width * 0.6,
       minRadius: 1,
       backgroundColor: Colors.transparent,
+      backgroundImage: AssetImage('assets/ball.png'),
       child: Stack(children: [
-        Image.asset('assets/ball.png'),
-        Image.asset('assets/small_star.png'),
-        Image.asset(
-          'assets/star.png',
+        Text(
+          context.watch<DataNotifier>().getResponse,
+          style: TextStyle(color: Colors.red),
+        )
+        /*
+        
+        
+        Align(
+          alignment: Alignment.center,
+          child: CircleAvatar(
+              maxRadius: MediaQuery.of(context).size.width * 0.45,
+              minRadius: 1,
+              backgroundColor: Colors.transparent,
+              backgroundImage: AssetImage('assets/small_star.png')),
         ),
+        Align(
+          alignment: Alignment.center,
+          child: CircleAvatar(
+              maxRadius: MediaQuery.of(context).size.width * 0.4,
+              minRadius: 1,
+              backgroundColor: Colors.transparent,
+              backgroundImage: AssetImage('assets/star.png')),
+        ),
+        */
       ]),
     );
   }

@@ -9,14 +9,20 @@ class DataNotifier extends ChangeNotifier {
   String get getResponse => _response;
 
   Future<void> getBallResponse() async {
-    var response = await http.get(Uri.parse("https://eightballapi.com/api"));
-    if (response.statusCode == 200) {
-      Map<String, dynamic> result = jsonDecode(response.body);
-      _response = result['reading'];
+    try {
+      var response = await http.get(Uri.parse("https://eightballapi.com/apis"));
+      if (response.statusCode == 200) {
+        Map<String, dynamic> result = jsonDecode(response.body);
+        _response = result['reading'];
+        print(_response);
+        notifyListeners();
+      } else {
+        throw new Exception("error");
+      }
+    } catch (e) {
+      _response = 'error';
       print(_response);
       notifyListeners();
-    } else {
-      throw new Exception("error");
     }
   }
 }
